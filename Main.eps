@@ -1,0 +1,37 @@
+//import FunctionTest as FT;
+
+const s = StringBuffer(1024);
+
+function onPluginStart(){
+	//
+	s.insert(0); // initialize. Without the initialization, text does not appeared.
+}
+
+function beforeTriggerExec(){
+	SetMemory(0x6509A0, SetTo, 0); //EUD터보
+	//SetMemory(0x5124F0, SetTo, 29);	//x2배속
+}
+
+function afterTriggerExec(){
+	EUDPlayerLoop()();
+	const cp = getcurpl();
+	//
+	if(cp < 7){
+		setcurpl(cp);
+		s.append("test");
+		s.Display();
+		s.insert(0);
+		
+		var main = dwread_epd(EPD(0x628438)); // 튕김 원인
+		once{CreateUnit(1, "Terran Marine", "Location 1", CurrentPlayer);}
+		
+		if(dwread(main + 0x0DC) & 0x4000000 == 0){
+			dwwrite(main + 0x0DC, dwread(main + 0x0DC)+0x4000000);
+		}
+		
+		//함수화 하기
+		//FT.funcname();
+	}
+	
+	EUDEndPlayerLoop();
+}
