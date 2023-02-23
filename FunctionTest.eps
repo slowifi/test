@@ -1,4 +1,20 @@
-
-function funcname(index){
-    //CUnit(index);
+/// <summary>
+/// arg1번째의 구조오프셋의 값을 value로 설정
+/// <\summary>
+function SetOffSet(main, arg1, value){
+    dwwrite(main + arg1, dwread(main + arg1));
 }
+
+/// <summary>
+/// arg1번째의 구조오프셋의 arg2번째 bit값을 flag로 설정
+/// <\summary>
+function SetOffSetBit(main, arg1, arg2, flag){
+    if(dwread(main + arg1) & arg2 != flag){
+        if(flag)
+		    dwwrite(main + arg1, dwread(main + arg1)+arg2);
+        else
+            dwwrite(main + arg1, dwread(main + arg1)-arg2);
+	}
+}
+
+//function GetOffSet
