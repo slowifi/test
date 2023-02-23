@@ -6,15 +6,17 @@ function SetOffSet(main, arg1, value){
 }
 
 /// <summary>
-/// arg1번째의 구조오프셋의 arg2번째 bit값을 flag로 설정
+/// Status Flag의 bit값을 flag로 설정
 /// <\summary>
-function SetOffSetBit(main, arg1, arg2, flag){
-    if(dwread(main + arg1) & arg2 != flag){
+function SetStsFlg(main, arg1, flag){
+    if(dwread(main + 0x0DC) & arg1 != flag){
         if(flag)
-		    dwwrite(main + arg1, dwread(main + arg1)+arg2);
+		    dwwrite(main + 0x0DC, dwread(main + 0x0DC)+arg1);
         else
-            dwwrite(main + arg1, dwread(main + arg1)-arg2);
+            dwwrite(main + 0x0DC, dwread(main + 0x0DC)-arg1);
 	}
 }
 
-//function GetOffSet
+function GetPos(main, arg1){
+    return posread_epd(EPD(main + arg1)/4);
+}
