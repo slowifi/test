@@ -1,0 +1,13 @@
+const g = -9.8;
+const retXacc = 0;
+const retYacc = 0;
+
+/// <summary>
+/// 오른쪽이 +x, 위쪽이 +y 방향
+/// 추가하는 가속도 값, (x,y) 넣기
+/// <\summary>
+function SetAcc(valx, valy) {
+    retXacc = valx;
+    retYacc = g+valy;
+    return retXacc, retYacc;
+}

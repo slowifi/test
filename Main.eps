@@ -1,6 +1,7 @@
-import FunctionTest as FT;
+import Offset as Os;
 
 const s = StringBuffer(1024);
+const main = EUDArray(6);
 
 function onPluginStart(){
 	//
@@ -16,21 +17,25 @@ function afterTriggerExec(){
 	EUDPlayerLoop()();
 	const cp = getcurpl();
 	//
-	if(cp < 7){
-		
-		var main = dwread_epd(EPD(0x628438));
-		//s.append("\nBeforWrite:");
-		//s.append(main);
+	if(cp < 6){
+		once{main[cp] = dwread_epd(EPD(0x628438));}
+
 		once{CreateUnit(1, "Terran Marine", "Location 1", CurrentPlayer);}
-		once{FT.SetStsFlg(main, 0x4000000, 1);} // invincibility
-		//s.append("\nAfterWrite");
-		//s.append(main);
-		s.append("\nCurPos:");
-		s.append(FT.GetPos(main, 0x028));
-		s.append("\nOrderPos");
-		s.append(FT.GetPos(main, 0x058));
-		s.append("\nFinalDestinationPos");
-		s.append(FT.GetPos(main, 0x010));
+		once{Os.SetStsFlg(main[cp], 0x4000000, 1);} // invincibility
+		s.append("\nCurPos: ");
+		s.append(Os.GetPos(main[cp], 0x028));
+		s.append("\nVel: ");
+		s.append(Os.GetOffSet(main[cp], 0x038));
+		s.append(" ");
+		s.append(Os.GetOffSet(main[cp], 0x03C));
+		s.append("\nVelx Vely: ");
+		s.append(Os.GetOffSet(main[cp], 0x040));
+		s.append(" ");
+		s.append(Os.GetOffSet(main[cp], 0x044));
+		s.append("\nAcc: ");
+		//s.append(Os.GetOffSet(main[cp], 0x048));
+		s.append(bwread_epd(main[cp] + 0x048, 1, 0));
+		bw
 		s.Display();
 		s.insert(0);
 	}
