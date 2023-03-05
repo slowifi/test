@@ -1,4 +1,5 @@
 import Offset as Os;
+import Physics as Ps;
 
 const s = StringBuffer(1024);
 const main = EUDArray(6);
@@ -19,25 +20,34 @@ function afterTriggerExec(){
 	//
 	if(cp < 6){
 		once{main[cp] = dwread_epd(EPD(0x628438));}
-
 		once{CreateUnit(1, "Terran Marine", "Location 1", CurrentPlayer);}
 		once{Os.SetStsFlg(main[cp], 0x4000000, 1);} // invincibility
+
 		s.append("\nCurPos: ");
 		s.append(Os.GetPos(main[cp], 0x028));
-		s.append("\nVel: ");
-		s.append(Os.GetOffSet(main[cp], 0x038));
-		s.append(" ");
-		s.append(Os.GetOffSet(main[cp], 0x03C));
+		//s.append(Os.GetOffSet(main[cp], 0x034)); // 최고 속도
+		//s.append("\nVel: ");
+		// s.append(Os.GetOffSet(main[cp], 0x038)); // 속도 1
+		// s.append(Os.GetOffSet(main[cp], 0x03C)); // 속도 2 (속도 1과 같음)
+		Os.SetOffSet(main[cp], 0x040, 1000);
 		s.append("\nVelx Vely: ");
-		s.append(Os.GetOffSet(main[cp], 0x040));
-		s.append(" ");
-		s.append(Os.GetOffSet(main[cp], 0x044));
-		s.append("\nAcc: ");
-		//s.append(Os.GetOffSet(main[cp], 0x048));
-		s.append(bwread_epd(main[cp] + 0x048, 1, 0));
-		bw
+		var x = Os.GetOffSet(main[cp], 0x040); // 수평 속도
+		var y = Os.GetOffSet(main[cp], 0x044); // 수직 속도
+		if(x > 0x0FFFFFFF){	x = 4294967295 - x + 1;	} // 속력 절댓값으로
+		if(y > 0x0FFFFFFF){	y = 4294967295 - y + 1;	} // 변환하기 2의 보수
+		s.append(x);	s.append(" ");		s.append(y);
+		//x, y = posread_epd(EPD(main[cp]) + 0x048/4);
+		//s.append(x);
 		s.Display();
 		s.insert(0);
+
+
+		if (<?KeyPress("cp", "d")?>){Os.SetOffSet(main[cp], 0x040, 1000);}
+		if (<?KeyPress("cp", "a")?>){Os.SetOffSet(main[cp], 0x040, -1000);}
+		if (<?KeyPress("cp", "w")?>){Os.SetOffSet(main[cp], 0x044, 1000);}
+		if (<?KeyPress("cp", "s")?>){Os.SetOffSet(main[cp], 0x044, -1000);}
+		if (<?KeyUp("cp", "a")?>){}
+		//Ps.PhysicsThread(x, y);
 	}
 	
 	EUDEndPlayerLoop();

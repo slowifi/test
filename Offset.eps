@@ -2,7 +2,7 @@
 /// arg1번째의 구조오프셋의 값을 value로 설정
 /// <\summary>
 function SetOffSet(main, arg1, value){
-    dwwrite(main + arg1, dwread(main + arg1));
+    dwwrite(main + arg1, value);
 }
 
 function GetOffSet(main, arg1){
